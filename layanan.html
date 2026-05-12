@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="id">
+<header>
+    <h1>GM CONBLOCK</h1>
+    <p>PERUSAHAAN PEMBUATAN PAVING & PRECAST</p>
+</header>
+
+<nav>
+    <a href="index.html" >Home</a>
+    <a href="tentang.html" >Tentang</a>
+    <a href="layanan.html" class="active" >Katalog</a>
+    <a href="https://wa.me/6281238978954" >Kontak</a>
+</nav>
+    <style>
+        nav a.active{
+            color: #007bff;
+            font-weight: bold;
+            position: relative;
+        }
+
+        nav a.active::after{
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -6px;
+
+            width: 100%;
+            height: 3px;
+
+            background: #007bff;
+            border-radius: 10px;
+        }
+        header{
+            background:linear-gradient(135deg,#111,#2b2b2b);
+            color:white;
+            text-align:center;
+            padding:35px 20px;
+        }
+        
+        header h1{
+            font-size:48px;
+            letter-spacing:2px;
+        }
+
+        header p{
+            margin-top:8px;
+            color:#ccc;
+            font-size:17px;
+        }
+
+        nav{
+            background:white;
+            padding:18px;
+            text-align:center;
+            box-shadow:0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        nav a{
+            color:#222;
+            text-decoration:none;
+            margin:0 20px;
+            font-weight:500;
+            transition:0.3s;
+        }
+
+        nav a:hover{
+            color:#007bff;
+}
+
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body{
+            background: #f5f5f5;
+        }
+
+        header{
+            background: #222;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container{
+            width: 90%;
+            margin: auto;
+            padding: 40px 0;
+        }
+
+        .judul{
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .judul h1{
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .judul p{
+            color: #666;
+        }
+
+        .catalog-grid{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .card{
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+            transition: 0.3s;
+        }
+
+        .card:hover{
+            transform: translateY(-5px);
+        }
+        .popup{
+            display: none;
+
+            position: fixed;
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+
+            background: rgba(0,0,0,0.6);
+
+            justify-content: center;
+            align-items: center;
+
+            z-index: 999;
+        }
+
+        .popup-content{
+            background: white;
+            width: 90%;
+            max-width: 900px;
+            padding: 30px;
+            border-radius: 15px;
+            position: relative;
+            overflow: auto;
+        }
+
+        .close{
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        table{
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th,
+        table td{
+            border: 1px solid #333;
+            padding: 12px;
+            text-align: center;
+            font-size: 20px;
+            white-space: nowrap;
+        }
+
+        table th{
+            background: #222;
+            color: white;
+        }
+
+        .btn-harga{
+
+            display: block;
+            width: fit-content;
+            margin: 20px auto 0 auto;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #222, #444);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .btn-harga:hover{
+
+            transform: translateY(-3px) scale(1.05);
+
+            background: linear-gradient(135deg, #444, #666);
+
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+        }
+        .image-box{
+            width: 100%;
+            height: 250px;
+
+            background: #e5e5e5;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            overflow: hidden;
+        }
+
+        .image-box img{
+            width: 100%;
+            height: 100%;
+
+            object-fit: contain;
+        }
+
+        .card-content{
+            padding: 20px;
+        }
+
+        .card-content h3{
+            margin-bottom: 10px;
+            color: #222;
+            font-size: 28px;
+        }
+
+        .card-content p{
+            color: #666;
+            line-height: 1.5;
+            min-height: 60px;
+        }
+
+        footer{
+            background: #222;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+
+    </style>
+
+</head>
+<div class="popup" id="popupHarga">
+
+    <div class="popup-content">
+
+        <span class="close" onclick="tutupPopup()">
+            &times;
+        </span>
+
+        <h2 id="judulProduk">
+            Daftar Harga
+        </h2>
+
+        <table>
+
+            <tr>
+                <th>Jenis</th>
+                <th>Harga Kirim</th>
+                <th>Harga Ambil</th>
+            </tr>
+
+            <tbody id="isiHarga">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<script>
+
+function bukaPopup(
+
+    produk,
+
+    ukuran1,
+    kirim1,
+    ambil1,
+
+    ukuran2,
+    kirim2,
+    ambil2
+
+){
+
+    document.getElementById("popupHarga").style.display = "flex";
+
+    document.getElementById("judulProduk").innerHTML = produk;
+
+    document.getElementById("isiHarga").innerHTML = `
+
+        <tr>
+            <td>${ukuran1}</td>
+            <td>${kirim1}</td>
+            <td>${ambil1}</td>
+        </tr>
+
+        <tr>
+            <td>${ukuran2}</td>
+            <td>${kirim2}</td>
+            <td>${ambil2}</td>
+        </tr>
+
+    `;
+}
+
+function bukaPopupSingle(
+
+    produk,
+    ukuran,
+    kirim,
+    ambil
+
+){
+
+    document.getElementById("popupHarga").style.display = "flex";
+
+    document.getElementById("judulProduk").innerHTML = produk;
+
+    document.getElementById("isiHarga").innerHTML = `
+
+        <tr>
+            <td>${ukuran}</td>
+            <td>${kirim}</td>
+            <td>${ambil}</td>
+        </tr>
+
+    `;
+}
+
+function tutupPopup(){
+
+    document.getElementById("popupHarga").style.display = "none";
+}
+
+</script>
+
+<body>
+
+    <header>
+        <h1>KATALOG PRODUK GM CONBLOCK</h1>
+    </header>
+
+    <div class="container">
+
+        <div class="judul">
+            <h1>Katalog Produk</h1>
+            <p>Daftar katalog produk tersedia</p>
+        </div>
+
+        <div class="catalog-grid">
+
+            <!-- CARD 1 -->
+            <div class="card">
+
+                <div class="image-box">
+                    <img src="paving n.png" alt="Paving Natural">
+                </div>
+
+                <div class="card-content">
+                    <h3>PAVING NATURAL</h3>
+
+                    <p>
+                        Paving natural ukuran 20 cm x 20 cm.
+                    </p>
+                </div>
+                    <button class="btn-harga"
+                            onclick="bukaPopup(
+
+                            'PAVING NATURAL',
+
+                            'Tebal 6 cm (20x20)',
+                            'Rp 90.000',
+                            'Rp 85.000',
+
+                            'Tebal 8 cm (20x20)',
+                            'Rp 100.000',
+                            'Rp 95.000'
+
+                            )">
+                                Lihat Harga
+                    </button>
+
+            </div>
+
+            <!-- CARD 2 -->
+            <div class="card">
+
+                <div class="image-box">
+                    <img src="paving m.png" alt="Paving Merah">
+                </div>
+
+                <div class="card-content">
+                    <h3>PAVING MERAH</h3>
+
+                    <p>
+                        Paving merah ukuran 20 cm x 20 cm.
+                    </p>
+                </div>
+                     <button class="btn-harga"
+                            onclick="bukaPopup(
+
+                            'PAVING NATURAL',
+
+                            'Tebal 6 cm (20x20)',
+                            'Rp 125.000',
+                            'Rp 120.000',
+
+                            'Tebal 8 cm (20x20)',
+                            'Rp 140.000',
+                            'Rp 135.000'
+
+                            )">
+                                Lihat Harga
+                    </button>
+
+
+            </div>
+
+            <!-- CARD 3 -->
+            <div class="card">
+
+                <div class="image-box">
+                    <img src="paving n k.png" alt="Paving Natural Kecil">
+                </div>
+
+                <div class="card-content">
+                    <h3>PAVING NATURAL</h3>
+
+                    <p>
+                        Paving natural ukuran 20 cm x 10 cm.
+                    </p>
+                </div>
+                        <button class="btn-harga"
+                            onclick="bukaPopup(
+
+                            'PAVING NATURAL',
+
+                            'Tebal 6 cm (20x10)',
+                            'Rp 95.000',
+                            'Rp 90.000',
+
+                            'Tebal 8 cm (20x10)',
+                            'Rp 105.000',
+                            'Rp 100.000'
+
+                            )">
+                                Lihat Harga
+                    </button>
+
+            </div>
+
+            <!-- CARD 4 -->
+            <div class="card">
+
+                <div class="image-box">
+                    <img src="paving m k.png" alt="Paving Merah Kecil">
+                </div>
+
+                <div class="card-content">
+                    <h3>PAVING MERAH</h3>
+
+                    <p>
+                        Paving merah ukuran 20 cm x 10 cm.
+                    </p>
+                </div>
+                        <button class="btn-harga"
+                            onclick="bukaPopup(
+
+                            'PAVING MERAH',
+
+                            'Tebal 6 cm (20x10)',
+                            'Rp 130.000',
+                            'Rp 125.000',
+
+                            'Tebal 8 cm (20x10)',
+                            'Rp 145.000',
+                            'Rp 130.000'
+
+                            )">
+                                Lihat Harga
+                    </button>
+
+            </div>
+
+            <!-- CARD 5 -->
+            <div class="card">
+
+                <div class="image-box">
+                    <img src="kanstin biasa.png" alt="Kanstin">
+                </div>
+
+                <div class="card-content">
+                    <h3>KANSTIN</h3>
+
+                    <p>
+                        Kanstin beton berkualitas kuat dan tahan lama.
+                    </p>
+                </div>
+                        <button class="btn-harga"
+                            onclick="bukaPopup(
+
+                            'Kanstin',
+
+                            'Ukuran Besar',
+                            'Rp 65.000',
+                            'Rp 60.000',
+
+                            'Ukuran Kecil',
+                            'Rp 55.000',
+                            'Rp 50.000'
+
+                            )">
+                                Lihat Harga
+                    </button>
+
+            </div>
+             <!-- CARD 6 -->
+              <div class="card">
+
+                <div class="image-box">
+                    <img src="kansten lubang.png" alt="kanstin">
+                </div>
+
+                <div class="card-content">
+                    <h3>KANSTIN LUBANG</h3>
+
+                    <p>
+                        Kanstin Lubang berkualitas Kuat dan Tahan Lama
+                    </p>
+                </div> 
+                <button class="btn-harga"
+                        onclick="bukaPopupSingle(
+
+                        'KANSTIN LUBANG',
+
+                        'Ukuran Standar',
+                        'Rp 65.000',
+                        'Rp 60.000'
+
+                        )">
+                            Lihat Harga
+                </button>
+
+            </div>
+             <!-- CARD 7 -->
+              <div class="card">
+
+                <div class="image-box">
+                    <img src="kansten kursi.png" alt="kanstin">
+                </div>
+
+                <div class="card-content">
+                    <h3>KANSTIN KURSI</h3>
+
+                    <p>
+                        Kanstin Kursi berkualitas Kuat dan Tahan Lama
+                    </p>
+                </div> 
+                    <button class="btn-harga"
+                        onclick="bukaPopupSingle(
+
+                        'KANSTIN KURSI',
+
+                        'Ukuran Standar',
+                        'Rp 75.000',
+                        'Rp 70.000'
+
+                        )">
+                            Lihat Harga
+                </button>
+            
+            </div>
+             <!-- CARD 8 -->
+              <div class="card">
+
+                <div class="image-box">
+                    <img src="grassblock.png" alt="grassblock">
+                </div>
+
+                <div class="card-content">
+                    <h3>GRASBLOCK</h3>
+
+                    <p>
+                        Grassblock 1 m persegi isi 6
+                    </p>
+                </div> 
+                    <button class="btn-harga"
+                        onclick="bukaPopupSingle(
+
+                        'GRASSBLOCK',
+
+                        'Ukuran Standar',
+                        'Rp 110.000',
+                        'Rp 105.000'
+
+                        )">
+                            Lihat Harga
+                </button>
+              </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>© 2026 GM CONBLOCK</p>
+    </footer>
+
+</body>
+</html>
